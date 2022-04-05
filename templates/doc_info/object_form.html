@@ -1,0 +1,47 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h5 class="my-3 border-bottom pb-2">오브젝트 수정</h5>
+    <form method="post" class="post-form my-3">
+        {% csrf_token %}
+        <!-- 오류 표시 Start -->
+        {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+            {% for field in form %}
+                {% if field.errors %}
+                <strong>{{ field.label }}</strong>
+                {{ field.errors }}
+                {% endif %}
+            {% endfor %}
+            </div>
+        {% endif %}
+        <!-- 오류 표시 End -->
+        <div class="form-group">
+            <label for="obj_class">분류</label>
+            <input type="text" class="form-control" name="obj_class" id="obj_class" value="{{ form.obj_class.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="obj_content">내용</label>
+            <input type="text" class="form-control" name="obj_content" id="obj_content" value="{{ form.obj_content.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="LB_x">좌하단 x좌표</label>
+            <input type="text" class="form-control" name="LB_x" id="LB_x" value="{{ form.LB_x.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="LB_y">좌하단 y좌표</label>
+            <input type="text" class="form-control" name="LB_y" id="LB_y" value="{{ form.LB_y.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="RT_x">우상단 x좌표</label>
+            <input type="text" class="form-control" name="RT_x" id="RT_x" value="{{ form.RT_x.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="RT_y">우상단 y좌표</label>
+            <input type="text" class="form-control" name="RT_y" id="RT_y" value="{{ form.RT_y.value|default_if_none:'' }}">
+        </div>
+        <button type="submit" class="btn-primary">저장하기</button>
+    </form>
+</div>
+{% endblock %}

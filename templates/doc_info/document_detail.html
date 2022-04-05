@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container my-3">
+    <h2 class="border-bottom py-2">{{ document.doc_name }}</h2>
+    <div class="card my-3">
+        <div class="row my-3">
+            <ul>
+                <li>문서분류 : {{ document.doc_type }}</li>
+                <li>문서디렉토리 : {{ document.file_path }}</li>
+                <li>원본식별 : {{ document.original_YN }}</li>
+            </ul>
+        </div>
+        <div class="my-3">
+            <a href="{% url 'doc_info:document_modify' document.id %}" class="btn btn-sm btn-outline-secondary">문서 수정</a>
+            <a href="#" class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'doc_info:document_delete' document.id %}">문서 삭제</a>
+        </div>
+    </div>
+    <h5 class="border-bottom my-3 py-2">
+        {{ document.object_set.count }}개의 오브젝트가 있습니다.
+    </h5>
+    <div class="card my-3">
+        <ul>
+            {% for object in document.object_set.all %}
+                <li>[ {{ object.obj_content }} ], {{ object.LB_x }}, {{ object.LB_y }}, {{ object.RT_x }}, {{ object.RT_y }}</li>
+                <a href="{% url 'doc_info:object_modify' object.id %}" class="btn btn-sm btn-outline-secondary">수정</a>
+                <a href="#" class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'doc_info:object_delete' object.id %}">삭제</a>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <form action="{% url 'doc_info:object_create' document.id %}" method="post">
+        {% csrf_token %}
+<!--        <div>분류</div>-->
+<!--        <textarea name="obj_class" id="obj_class" ></textarea>-->
+        <div>내용</div>
+        <textarea name="obj_content" id="obj_content" ></textarea>
+        <div>좌하단x</div>
+        <textarea name="LB_x" id="LB_x" ></textarea>
+        <div>좌하단y</div>
+        <textarea name="LB_y" id="LB_y" ></textarea>
+        <div>우상단x</div>
+        <textarea name="RT_x" id="RT_x" ></textarea>
+        <div>우상단y</div>
+        <textarea name="RT_y" id="RT_y" ></textarea>
+        <input type="submit" value="내용 등록">
+    </form>
+</div>
+
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $(".delete").on('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = $(this).data('uri');
+        }
+    });
+});
+</script>
+{% endblock %}
+
+
+
+
+{#<h1>{{ document.doc_name }}</h1>#}
+{##}
+{#<div>#}
+{#    {{ document.doc_type }}#}
+{#</div>#}
+{#<div>#}
+{#    {{ document.file_path }}#}
+{#</div>#}
+{#<div>#}
+{#    {{ document.original_YN }}#}
+{#</div>#}
+{##}
+{#<h5>{{ document.object_set.count }}개의 오브젝트가 있습니다.</h5>#}
+{#<div>#}
+{#    <ul>#}
+{#        {% for object in document.object_set.all %}#}
+{#            <li>{{ object.obj_class }}, {{ object.obj_content }}, {{ object.LB_x }}, {{ object.LB_y }}, {{ object.RT_x }}, {{ object.RT_y }}</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#</div>#}
+{##}
+{#<form action="{% url 'doc_info:object_create' document.id %}" method="post">#}
+{#    {% csrf_token %}#}
+{#    <div>분류</div>#}
+{#    <textarea name="obj_content" id="obj_content" ></textarea>#}
+{#    <div></div>#}
+{#    <textarea name="obj_class" id="obj_class" ></textarea>#}
+{#    <div></div>#}
+{#    <textarea name="LB_x" id="LB_x" ></textarea>#}
+{#    <div></div>#}
+{#    <textarea name="LB_y" id="LB_y" ></textarea>#}
+{#    <div></div>#}
+{#    <textarea name="RT_x" id="RT_x" ></textarea>#}
+{#    <div></div>#}
+{#    <textarea name="RT_y" id="RT_y" ></textarea>#}
+{#    <input type="submit" value="내용 등록">#}
+{#</form>#}
